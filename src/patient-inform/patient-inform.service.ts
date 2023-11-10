@@ -46,11 +46,20 @@ export class PatientInformService {
     }
   }
 
-  LowerSort(TargetList: [number[], number[]]): number[] { // 내림차순 정렬
-    var result: number[];
-    for (let i = 0; i < 10; i++){
-
+  LowerSort(TargetList: [...number[][]]): number[][] { // 내림차순 정렬
+    var min: number, tmp: number[] = [];
+    for (let i = 0; i < TargetList.length; i++){
+      min = i;
+      for (let j = i; j < TargetList.length; j++){
+        if (TargetList[min][1] > TargetList[j][1]){
+          min = j;
+        }
+      }
+      tmp = TargetList[i];
+      TargetList[i] = TargetList[min];
+      TargetList[min] = tmp;
     }
+    return TargetList;
   }
 
   ImpactFactor(){ // Impactfactor 계산기
