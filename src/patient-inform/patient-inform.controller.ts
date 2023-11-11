@@ -23,7 +23,7 @@ export class PatientInformController {
         if (ShortPatientData.urgent == 0){ // 특수응급환자 케이스. 여기는 병원 정보 없으면 만들기 힘듬. 우리수준에서 구현 안됨
 
         } else if (ShortPatientData.urgent == 1){ // 일반응급환자 케이스. 대기시간 + 이동시간 내림차순. 권역응급, 지역응급기관만 나열
-            for (let i = 0; i < 10; i++){
+            for (let i = 0; i < allhospital.length; i++){
                 var arrival: number;
                 arrival = this.patientService.CalculateArrival(allhospital[i].latitude, allhospital[i].longitude, 
                     ShortPatientData.latitude, ShortPatientData.longitude);
@@ -41,17 +41,17 @@ export class PatientInformController {
     }
 
     @Post('setdestination')
-    async SetDestination(@Body() PatientData: ){
+    async SetDestination(@Body() PatientData){
 
     }
 
     @Post('stoptransfer')
-    async StopTransfer(@Body() StopData: ){
+    async StopTransfer(@Body() StopData){
 
     }
 
     @Post('editpatient')
-    async EditPatient(@Body() PatientData: ){
+    async EditPatient(@Body() PatientData){
 
     }
 

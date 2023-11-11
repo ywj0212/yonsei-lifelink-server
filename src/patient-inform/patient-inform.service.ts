@@ -62,8 +62,8 @@ export class PatientInformService {
     return TargetList;
   }
 
-  ImpactFactor(){ // Impactfactor 계산기
-
+  ImpactFactor(TargetList: Hospital, arrival: number, delayed: number){ // Impactfactor 계산기
+    
   }
 
   async findAll(): Promise<Hospital[]> { // 모든 병원 찾아서 반환
