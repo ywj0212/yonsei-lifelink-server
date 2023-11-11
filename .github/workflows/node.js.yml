@@ -32,5 +32,5 @@ jobs:
     - name: Kill Node on TCP 3000
       run: kill -9 `lsof -t -i:3000` ; echo "Killed"
     - name: Run Prod Server
-      run: npm run start:prod &
+      run: nohup npm run start:prod > nohup.log &
       
