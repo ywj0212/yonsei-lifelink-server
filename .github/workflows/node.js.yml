@@ -30,6 +30,7 @@ jobs:
     - name: Build project
       run: CI=false npm run build
     - name: Kill Node on TCP 3000
+      continue-on-error: true
       run: kill -9 `lsof -t -i:3000` ; echo "Killed"
     - name: Run Prod Server
       run: nohup npm run start:prod > nohup.log &
