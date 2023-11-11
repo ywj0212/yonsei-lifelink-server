@@ -30,8 +30,7 @@ jobs:
     - name: Build project
       run: CI=false npm run build
     - name: Kill Node on TCP 3000
-      continue-on-error: true
-      run: kill -9 `lsof -t -i:3000` ; echo "Killed"
+      run: pm2 stop LifeLinkNest
     - name: Run Prod Server
-      run: nohup npm run start:prod > nohup.log &
+      run: pm2 start LifeLinkNest
       
