@@ -4,7 +4,7 @@ import { HydratedDocument } from 'mongoose';
 @Schema()
 export class Patient{
     @Prop()
-    Id: string
+    id: number
 
     @Prop()
     name: string
@@ -14,6 +14,30 @@ export class Patient{
 
     @Prop()
     updateTime: number
+
+    @Prop()
+    expectedArrival: number
+
+    @Prop()
+    gido: string
+
+    @Prop()
+    isBreathing: boolean
+
+    @Prop()
+    breathDepth: string
+
+    @Prop()
+    bloodPressure: string
+
+    @Prop()
+    beat: string
+
+    @Prop()
+    isBleeding: boolean
+
+    @Prop()
+    consciousness: string
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);

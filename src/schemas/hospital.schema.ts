@@ -5,16 +5,16 @@ import { Patient } from './patient.schema';
 @Schema()
 export class Hospital{
     @Prop() // 아이디
-    Id: number
+    id: number
 
     @Prop() // 병원이름
     name: string
 
     @Prop() // 위도
-    latitude: number[]
+    latitude: number
 
     @Prop() // 경도
-    longitude: number[]
+    longitude: number
 
     @Prop() // 예측 + 실제 응급환자 유입 함수
     fx: number[]

@@ -5,6 +5,7 @@ import { Hospital } from '../schemas/hospital.schema';
 import { CreateHospitalDto } from '../dtos/hosptial.dto';
 import { Patient } from '../schemas/patient.schema';
 import { Cron } from '@nestjs/schedule'
+import { CreatePatientDto } from 'src/dtos/registerpatient.dto';
 
 @Injectable()
 export class PatientInformService {
@@ -18,14 +19,15 @@ export class PatientInformService {
     return createdHospital.save();
   }
 
+  async createPatient(createPatientDto: CreatePatientDto) {
+    var addedData: Patient;
+    
+  }
+
   @Cron('1 */5 * * * *') // 매 5분 1초마다 fx, gx 업데이트하는 함수
   async updateAllfxgx(){
     var time: number = this.GetTime();
-    if (time == 0){ // 여기 time 은 한단위 전 시간을 의미
-      time = 287;
-    } else {
-      time = time -1;
-    }
+    time = (288 + time - 1) % 288 // 여기 time 은 한단위 전 시간을 의미
     var allhospital = await this.findAll();
     for (let i = 0; i < allhospital.length; i++){
       // fx, gx 값 변경
@@ -38,12 +40,17 @@ export class PatientInformService {
       }
       // fx, gx, prev_fx, Prev_gx, current_fx, current_gx 업데이트
       await this.hospitalModel.updateOne(
-        {"Id" : allhospital[i].Id},
-        {$set: {"prev_fx.${time}" : allhospital[i].current_fx[time], "prev_gx.${time}": allhospital[i].current_gx[time], 
-                "current_fx.${time}": [], "current_gx.${time}": [],
-                "fx": allhospital[i].fx, "gx": allhospital[i].gx,}}
+        {"id" : allhospital[i].id},
+        {$set: {
+          "prev_fx.${time}" : allhospital[i].current_fx[time], "prev_gx.${time}": allhospital[i].current_gx[time], 
+          "current_fx.${time}": [], "current_gx.${time}": [], "fx": allhospital[i].fx, "gx": allhospital[i].gx}}
       );
     }
+  }
+
+  @Cron('20 */5 * * * *')
+  async addFakefxgx(){
+
   }
 
   LowerSort(TargetList: [...number[][]]): number[][] { // 내림차순 정렬
@@ -62,8 +69,17 @@ export class PatientInformService {
     return TargetList;
   }
 
-  ImpactFactor(TargetList: Hospital, arrival: number, delayed: number){ // Impactfactor 계산기
-    
+  Ex(x: number): number{
+    var tangent: number = 1.4;
+    return tangent * x + 1;
+  }
+
+  ImpactFactor(fx: number[], gx: number[], arrival: number, delayed: number,Ce: number, Cn: number, k: number){ // Impactfactor 계산기
+    var IM: number = 0;
+    for (let i = arrival; i < arrival + delayed; i++){
+      IM = IM + Math.max(1.4 * this.Integration(fx, (288 + arrival - Ce) % 288, arrival) + this.Integration(gx, (288 + arrival - Cn) % 288, arrival) - k, 0);
+    }
+    return this.Ex(IM);
   }
 
   async findAll(): Promise<Hospital[]> { // 모든 병원 찾아서 반환
@@ -71,27 +87,27 @@ export class PatientInformService {
   }
 
   async findbyId_hospital(TargetId:number): Promise<Hospital> { // 아이디로 병원찾기
-    return this.hospitalModel.findOne({Id:TargetId});
+    return this.hospitalModel.findOne({id:TargetId});
   }
 
   async findbyId_patient(TargetId:string): Promise<Patient> { // 아이디로 환자찾기
-    return this.patientModel.findOne({Id:TargetId});
+    return this.patientModel.findOne({id:TargetId});
   }
 
   Integration(TargetList: number[], Start: number, End: number) : number{ // 적분. 마지막 포함
     var result: number = 0;
-    for (let i = Start; i <= End; i++){
+    for (let i = Start; i < End; i++){
         result = result + TargetList[i];
     }
     return result;
   }
 
-  CalculateDelyedTime(fx : number[], gx : number[], arrival : number, Ce : number, Cn : number): number{ // 대기시간 계산 함수. 여기 arrival은 5분단위
+  CalculateDelyedTime(fx : number[], gx : number[], arrival : number, Ce : number, Cn : number, k: number): number{ // 대기시간 계산 함수. 여기 arrival은 5분단위
     var result: number = 0;
-    var target: number = this.Integration(fx, arrival - Ce, arrival) + this.Integration(gx, arrival - Cn, arrival);
+    var target: number = this.Integration(fx, (288 + arrival - Ce) % 288, arrival) + this.Integration(gx, (288 + arrival - Cn) % 288, arrival) - k;
     var Var1: number = 0;
     while (Var1 < target){
-        Var1 = fx[arrival - Ce + result] + gx[arrival - Cn + result];
+        Var1 = Var1 + fx[(288 + arrival - Ce + result) % 288] + gx[(288 + arrival - Cn + result) % 288];
         result++;
     }
     return result;
@@ -114,7 +130,7 @@ export class PatientInformService {
     return (+hours)*60 + (+minutes);
   }
 
-  CalculateArrival(HA: number[], HO: number[], PA: number[], PO: number[]): number{ // 도착시간 계산함수. api활용? 여기 arrival은 1분단위
-    return Math.floor(((((HA[0] - PA[0])*1800 + (HA[1] - PA[1])*30)**2 + ((HO[0] - PO[0])*1800 + (HO[1] - PO[1])*30)**2)**(1/2)/823)/5);
+  CalculateArrival(HA: number, HO: number, PA: number, PO: number): number{ // 도착시간 계산함수. api활용? 여기 arrival은 1분단위
+    return Math.round((((((HA-PA)*1111900)**2 + ((HO-PO)*654322)**2)/823)/5));
   }
 }

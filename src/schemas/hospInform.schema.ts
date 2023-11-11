@@ -4,7 +4,7 @@ import { HydratedDocument } from 'mongoose';
 @Schema()
 export class HospInform{
     @Prop()
-    Id: string
+    id: number
 
     @Prop()
     name: string

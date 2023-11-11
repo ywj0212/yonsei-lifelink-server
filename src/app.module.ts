@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PatientInformController } from './patient-inform/patient-inform.controller';
+import { HospitalInformController, PatientInformController } from './patient-inform/patient-inform.controller';
 import { PatientInformService } from './patient-inform/patient-inform.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Hospital, HosptalSchema } from './schemas/hospital.schema';
@@ -14,7 +14,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     MongooseModule.forFeature([{ name: Patient.name , schema: PatientSchema }]),
     ScheduleModule.forRoot()
   ],
-  controllers: [PatientInformController],
+  controllers: [PatientInformController, HospitalInformController],
   providers: [PatientInformService],
 })
 export class AppModule {}

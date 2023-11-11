@@ -1,13 +1,13 @@
-import { IsNumber, IsEmail, IsString, Length, IsEmpty} from 'class-validator'
+import { IsNumber, IsEmail, IsString, Length, IsEmpty, IsNotEmpty} from 'class-validator'
 
 export class CreateGetHospitalDto{
-    @IsEmpty()
-    latitude: number[]
+    @IsNotEmpty()
+    latitude: number
 
-    @IsEmpty()
-    longitude: number[]
+    @IsNotEmpty()
+    longitude: number
 
-    @IsEmpty()
+    @IsNotEmpty()
     @IsNumber()
-    urgent: number
+    preKTAS: number
 }
