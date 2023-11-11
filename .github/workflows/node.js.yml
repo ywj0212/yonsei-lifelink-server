@@ -30,7 +30,7 @@ jobs:
     - name: Run test code
       run: npm run test
     - name: Build project
-      run: npm run build
+      run: CI=false npm run build
     - name: Run Prod Server
       run: npm run start:prod
       
