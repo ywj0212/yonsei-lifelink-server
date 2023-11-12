@@ -427,7 +427,39 @@ export class HospitalInformController {
                     },
                   ]
               }    // 위와 동일
-            }
+            },
+            hospitals: [
+                {
+                  name: '인천적십자병원',
+                  type: '지역응급의료기관',
+                  trasferringPatient: 8,
+                  currentCongestion: 3,
+                  emBedExists: 75,
+                  emBedOccupied: 65,
+                  icuBedExists: 50,
+                  icuBedOccupied: 34
+                },
+                {
+                    name: '인천힘찬종합병원',
+                    type: '지역응급의료기관',
+                    trasferringPatient: 4,
+                    currentCongestion: 2,
+                    emBedExists: 75,
+                    emBedOccupied: 65,
+                    icuBedExists: 50,
+                    icuBedOccupied: 34
+                },
+                {
+                    name: '의료법인길의료재단길병원',
+                    type: '권역응급의료센터',
+                    trasferringPatient: 17,
+                    currentCongestion: 3,
+                    emBedExists: 75,
+                    emBedOccupied: 65,
+                    icuBedExists: 50,
+                    icuBedOccupied: 34
+                }
+              ]
           }
     }
 
