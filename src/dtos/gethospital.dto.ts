@@ -2,9 +2,11 @@ import { IsNumber, IsEmail, IsString, Length, IsEmpty, IsNotEmpty} from 'class-v
 
 export class CreateGetHospitalDto{
     @IsNotEmpty()
+    @IsNumber()
     latitude: number
 
     @IsNotEmpty()
+    @IsNumber()
     longitude: number
 
     @IsNotEmpty()
