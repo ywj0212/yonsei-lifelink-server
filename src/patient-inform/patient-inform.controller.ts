@@ -111,6 +111,11 @@ export class PatientInformController {
 
     }
 
+    @Post('test')
+    async test(@Body() dds: any){
+        return dds;
+    }
+
 }
 
 @Controller('web')
