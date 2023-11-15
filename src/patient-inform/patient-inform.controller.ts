@@ -157,7 +157,7 @@ export class PatientInformController {
             patientId: TargetPatient.id,
             hospitalId: TargetPatient.HospitalId,
             name: TargetHospital.name,
-            estimatedArrival: (((arrival * 5) + Time ) / 60) + ((((arrival * 5) + Time ) % 60) * 0.01)
+            estimatedArrival: Math.floor((((arrival * 5) + Time ) % 1440) / 60) + ((((arrival * 5) + Time ) % 60) * 0.01)
         };
         console.log(Time, arrival);
         return returnResult;
@@ -222,15 +222,16 @@ export class HospitalInformController {
 
         for (let i = 0; i < 6; i++){
             patients[i] = [[], []];
-            for (let j = 0; j < MyHospital.current_fx[Time + i].length; j++){
-                if (MyHospital.current_fx[Time + i][j].expectedArrival <= preciseTime){
+            for (let j = 0; j < MyHospital.current_fx[(288 + Time + i) % 288].length; j++){
+                if (MyHospital.current_fx[(288 + Time + i) % 288][j].expectedArrival <= preciseTime){
+                    console.log(1);
                     continue;
                 } else {
                     var returnpatient: GETINFO_RETURN_PATIENT = {
-                        name: MyHospital.current_fx[Time + i][j].name,
-                        age: MyHospital.current_fx[Time + i][j].age,
-                        sex: MyHospital.current_fx[Time + i][j].sex,
-                        latitude: MyHospital.current_fx[Time + i][j].latitude,
+                        name: MyHospital.current_fx[(288 + Time + i) % 288][j].name,
+                        age: MyHospital.current_fx[(288 + Time + i) % 288][j].age,
+                        sex: MyHospital.current_fx[(288 + Time + i) % 288][j].sex,
+                        latitude: MyHospital.current_fx[(288 + Time + i) % 288][j].latitude,
                         longitude: MyHospital.current_fx[Time + i][j].longitude,
                         preKTAS: MyHospital.current_fx[Time + i][j].preKTAS,
                     
@@ -254,8 +255,9 @@ export class HospitalInformController {
         }
         patients[6] = [[], []];
         for (let i = 6; i < 20; i++){
-            for (let j = 0; j < MyHospital.current_fx[Time + i].length; j++){
-                if (MyHospital.current_fx[Time + i][j].expectedArrival <= preciseTime){
+            for (let j = 0; j < MyHospital.current_fx[(288 + Time + i)%288].length; j++){
+                if (MyHospital.current_fx[(288 + Time + i)%288][j].expectedArrival <= preciseTime){
+                    console.log(1);
                     continue;
                 } else {
                     var returnpatient: GETINFO_RETURN_PATIENT = {

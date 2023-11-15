@@ -264,6 +264,7 @@ export class PatientInformService {
           RandomUpdate_gx[Math.floor(Math.random() * 5)].push(j);
         }
       }
+      console.log(RandomUpdate_fx, RandomUpdate_gx);
       // fx, gx, prev_fx, Prev_gx, current_fx, current_gx 업데이트
       await this.hospitalModel.updateOne(
         {"id" : allhospital[i].id},
@@ -285,22 +286,24 @@ export class PatientInformService {
     for (let i = 0; i < TargetHospitals.length; i++){
       var addedPatient: Patient[] = [];
       for (let k = 0; k < TargetHospitals[i].AutoGenerate_current_fx[dtime].length; k++){
-        addedPatient.push(await this.generateFakePatient(++TargetHospitals[i].patientscountforid, TargetHospitals[i].id, TargetHospitals[i].AutoGenerate_current_fx[dtime][k] + time, 0));
-        TargetHospitals[i].current_fx[(288 + TargetHospitals[i].AutoGenerate_current_fx[dtime][k] + time) % 288].push(addedPatient[k]);
+        var tgtpatient: Patient = await this.generateFakePatient(++TargetHospitals[i].patientscountforid, TargetHospitals[i].id, TargetHospitals[i].AutoGenerate_current_fx[dtime][k] + time, 0);
+        addedPatient.push(tgtpatient);
+        TargetHospitals[i].current_fx[(288 + TargetHospitals[i].AutoGenerate_current_fx[dtime][k] + time) % 288].push(tgtpatient);
       }
       
       for (let k = 0; k < TargetHospitals[i].AutoGenerate_current_gx[dtime].length; k++){
-        addedPatient.push(await this.generateFakePatient(++TargetHospitals[i].patientscountforid, TargetHospitals[i].id, TargetHospitals[i].AutoGenerate_current_gx[dtime][k] + time, 1));
-        TargetHospitals[i].current_gx[(288 + TargetHospitals[i].AutoGenerate_current_gx[dtime][k] + time) % 288].push(addedPatient[k]);
+        var tgtpatient2: Patient = await this.generateFakePatient(++TargetHospitals[i].patientscountforid, TargetHospitals[i].id, TargetHospitals[i].AutoGenerate_current_gx[dtime][k] + time, 1);
+        addedPatient.push(tgtpatient2);
+        TargetHospitals[i].current_gx[(288 + TargetHospitals[i].AutoGenerate_current_gx[dtime][k] + time) % 288].push(tgtpatient2);
       }
-      //console.log(addedPatient);
+      //console.log(addedPatient.length);
       //console.log(`Before update - current_fx[${time}] length:`, TargetHospitals[i].current_fx[time].length);
       //console.log(`Before update - current_gx[${time}] length:`, TargetHospitals[i].current_gx[time].length);
       await this.patientModel.insertMany(addedPatient);
       await this.hospitalModel.updateOne(
         {"id" : TargetHospitals[i].id},
         {$set: {
-          [`current_fx.${time}`] : TargetHospitals[i].current_fx[time], [`current_gx.${time}`] : TargetHospitals[i].current_gx[time],
+          "current_fx" : TargetHospitals[i].current_fx, "current_gx" : TargetHospitals[i].current_gx,
           "patientscountforid" : TargetHospitals[i].patientscountforid
         }}
       );
