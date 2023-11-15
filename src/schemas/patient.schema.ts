@@ -10,7 +10,19 @@ export class Patient{
     name: string
 
     @Prop()
-    urgent: number
+    age: number
+
+    @Prop()
+    sex: string
+
+    @Prop()
+    preKTAS: number
+
+    @Prop()
+    latitude: number
+
+    @Prop()
+    longitude: number
 
     @Prop()
     updateTime: number
@@ -38,6 +50,9 @@ export class Patient{
 
     @Prop()
     consciousness: string
+
+    @Prop()
+    HospitalId: number
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);

@@ -10,6 +10,9 @@ export class Hospital{
     @Prop() // 병원이름
     name: string
 
+    @Prop() // 병원 등급
+    type: string
+
     @Prop() // 위도
     latitude: number
 
@@ -49,8 +52,20 @@ export class Hospital{
     @Prop() // 응급환자 순환 시간
     Ce: number
 
-    @Prop() // 최외각환자 평균 이동시간
-    OuterMost: number
+    @Prop() // 최외각환자 평균 이동시간 (응급)
+    OuterMost_fx: number
+
+    @Prop() // 최외각환자 평균 이동시간 (경상)
+    OuterMost_gx: number
+
+    @Prop()
+    patientscountforid: number
+
+    @Prop()
+    AutoGenerate_current_fx: number[][]
+
+    @Prop()
+    AutoGenerate_current_gx: number[][]
 }
 
 export const HosptalSchema = SchemaFactory.createForClass(Hospital);
