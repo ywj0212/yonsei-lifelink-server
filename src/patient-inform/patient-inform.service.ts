@@ -117,7 +117,7 @@ export class PatientInformService {
       "의료법인석경의료재단센트럴병원",
       "인천기독병원"
     ];
-    var HospitalLatitude: number[] = [
+    var HospitalLongitude: number[] = [
       126.670502,
       126.689650,
       126.714830,
@@ -129,7 +129,7 @@ export class PatientInformService {
       126.728189,
       126.632106
     ];
-    var HospitalLongitude: number[] = [
+    var HospitalLatitude: number[] = [
       37.407981,
       37.418004,
       37.400971,
@@ -264,7 +264,7 @@ export class PatientInformService {
           RandomUpdate_gx[Math.floor(Math.random() * 5)].push(j);
         }
       }
-      console.log(RandomUpdate_fx, RandomUpdate_gx);
+      //console.log(RandomUpdate_fx, RandomUpdate_gx);
       // fx, gx, prev_fx, Prev_gx, current_fx, current_gx 업데이트
       await this.hospitalModel.updateOne(
         {"id" : allhospital[i].id},
@@ -307,11 +307,12 @@ export class PatientInformService {
           "patientscountforid" : TargetHospitals[i].patientscountforid
         }}
       );
+      console.log(`patients transferring to ${TargetHospitals[i].name}:`, this.CalculateTransferringPatient(TargetHospitals[i].current_fx, TargetHospitals[i].current_gx));
       //console.log(`After update - current_fx[${time}] length:`, TargetHospitals[i].current_fx[time].length);
       //console.log(`After update - current_gx[${time}] length:`, TargetHospitals[i].current_gx[time].length);
     }
     //console.log("After update - TargetHospitals.length:", TargetHospitals.length);
-    //console.log("\n");
+    console.log("\n");
   }
 
   async generateFakePatient(idcount: number, hospitalId: number, arrival: number, urgent: number, randarrival: number = Math.floor(Math.random() * 5)): Promise<Patient>{

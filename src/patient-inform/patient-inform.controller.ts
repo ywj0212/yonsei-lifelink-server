@@ -224,7 +224,6 @@ export class HospitalInformController {
             patients[i] = [[], []];
             for (let j = 0; j < MyHospital.current_fx[(288 + Time + i) % 288].length; j++){
                 if (MyHospital.current_fx[(288 + Time + i) % 288][j].expectedArrival <= preciseTime){
-                    console.log(1);
                     continue;
                 } else {
                     var returnpatient: GETINFO_RETURN_PATIENT = {
@@ -232,20 +231,51 @@ export class HospitalInformController {
                         age: MyHospital.current_fx[(288 + Time + i) % 288][j].age,
                         sex: MyHospital.current_fx[(288 + Time + i) % 288][j].sex,
                         latitude: MyHospital.current_fx[(288 + Time + i) % 288][j].latitude,
-                        longitude: MyHospital.current_fx[Time + i][j].longitude,
-                        preKTAS: MyHospital.current_fx[Time + i][j].preKTAS,
+                        longitude: MyHospital.current_fx[(288 +Time + i) % 288][j].longitude,
+                        preKTAS: MyHospital.current_fx[(288 +Time + i) % 288][j].preKTAS,
                     
-                        gido: MyHospital.current_fx[Time + i][j].gido,
-                        isBreathing: MyHospital.current_fx[Time + i][j].isBreathing,  
-                        breathDepth: MyHospital.current_fx[Time + i][j].breathDepth,
-                        bloodPressure: MyHospital.current_fx[Time + i][j].bloodPressure,
-                        beat: MyHospital.current_fx[Time + i][j].beat,
-                        isBleeding: MyHospital.current_fx[Time + i][j].isBleeding,
-                        consciousness: MyHospital.current_fx[Time + i][j].consciousness,
+                        gido: MyHospital.current_fx[(288 + Time + i) % 288][j].gido,
+                        isBreathing: MyHospital.current_fx[(288 + Time + i) % 288][j].isBreathing,  
+                        breathDepth: MyHospital.current_fx[(288 + Time + i) % 288][j].breathDepth,
+                        bloodPressure: MyHospital.current_fx[(288 + Time + i) % 288][j].bloodPressure,
+                        beat: MyHospital.current_fx[(288 + Time + i) % 288][j].beat,
+                        isBleeding: MyHospital.current_fx[(288 + Time + i) % 288][j].isBleeding,
+                        consciousness: MyHospital.current_fx[(288 + Time + i) % 288][j].consciousness,
                     
-                        hospitalId: MyHospital.current_fx[Time + i][j].HospitalId 
+                        hospitalId: MyHospital.current_fx[(288 + Time + i) % 288][j].HospitalId 
                     };
-                    if(MyHospital.current_fx[Time + i][j].preKTAS < 1){
+                    if(MyHospital.current_fx[(288 + Time + i) % 288][j].preKTAS < 1){
+                        patients[i][1].push(returnpatient);
+                    } else {
+                        patients[i][0].push(returnpatient);
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < 6; i++){
+            for (let j = 0; j < MyHospital.current_gx[(288 + Time + i) % 288].length; j++){
+                if (MyHospital.current_gx[(288 + Time + i) % 288][j].expectedArrival <= preciseTime){
+                    continue;
+                } else {
+                    var returnpatient: GETINFO_RETURN_PATIENT = {
+                        name: MyHospital.current_gx[(288 + Time + i) % 288][j].name,
+                        age: MyHospital.current_gx[(288 + Time + i) % 288][j].age,
+                        sex: MyHospital.current_gx[(288 + Time + i) % 288][j].sex,
+                        latitude: MyHospital.current_gx[(288 + Time + i) % 288][j].latitude,
+                        longitude: MyHospital.current_gx[(288 +Time + i) % 288][j].longitude,
+                        preKTAS: MyHospital.current_gx[(288 +Time + i) % 288][j].preKTAS,
+                    
+                        gido: MyHospital.current_gx[(288 + Time + i) % 288][j].gido,
+                        isBreathing: MyHospital.current_gx[(288 + Time + i) % 288][j].isBreathing,  
+                        breathDepth: MyHospital.current_gx[(288 + Time + i) % 288][j].breathDepth,
+                        bloodPressure: MyHospital.current_gx[(288 + Time + i) % 288][j].bloodPressure,
+                        beat: MyHospital.current_gx[(288 + Time + i) % 288][j].beat,
+                        isBleeding: MyHospital.current_gx[(288 + Time + i) % 288][j].isBleeding,
+                        consciousness: MyHospital.current_gx[(288 + Time + i) % 288][j].consciousness,
+                    
+                        hospitalId: MyHospital.current_gx[(288 + Time + i) % 288][j].HospitalId 
+                    };
+                    if(MyHospital.current_gx[(288 + Time + i) % 288][j].preKTAS < 1){
                         patients[i][1].push(returnpatient);
                     } else {
                         patients[i][0].push(returnpatient);
@@ -257,28 +287,58 @@ export class HospitalInformController {
         for (let i = 6; i < 20; i++){
             for (let j = 0; j < MyHospital.current_fx[(288 + Time + i)%288].length; j++){
                 if (MyHospital.current_fx[(288 + Time + i)%288][j].expectedArrival <= preciseTime){
-                    console.log(1);
                     continue;
                 } else {
                     var returnpatient: GETINFO_RETURN_PATIENT = {
-                        name: MyHospital.current_fx[Time + i][j].name,
-                        age: MyHospital.current_fx[Time + i][j].age,
-                        sex: MyHospital.current_fx[Time + i][j].sex,
-                        latitude: MyHospital.current_fx[Time + i][j].latitude,
-                        longitude: MyHospital.current_fx[Time + i][j].longitude,
-                        preKTAS: MyHospital.current_fx[Time + i][j].preKTAS,
+                        name: MyHospital.current_fx[(288 + Time + i) % 288][j].name,
+                        age: MyHospital.current_fx[(288 + Time + i) % 288][j].age,
+                        sex: MyHospital.current_fx[(288 + Time + i) % 288][j].sex,
+                        latitude: MyHospital.current_fx[(288 + Time + i) % 288][j].latitude,
+                        longitude: MyHospital.current_fx[(288 +Time + i) % 288][j].longitude,
+                        preKTAS: MyHospital.current_fx[(288 +Time + i) % 288][j].preKTAS,
                     
-                        gido: MyHospital.current_fx[Time + i][j].gido,
-                        isBreathing: MyHospital.current_fx[Time + i][j].isBreathing,  
-                        breathDepth: MyHospital.current_fx[Time + i][j].breathDepth,
-                        bloodPressure: MyHospital.current_fx[Time + i][j].bloodPressure,
-                        beat: MyHospital.current_fx[Time + i][j].beat,
-                        isBleeding: MyHospital.current_fx[Time + i][j].isBleeding,
-                        consciousness: MyHospital.current_fx[Time + i][j].consciousness,
+                        gido: MyHospital.current_fx[(288 + Time + i) % 288][j].gido,
+                        isBreathing: MyHospital.current_fx[(288 + Time + i) % 288][j].isBreathing,  
+                        breathDepth: MyHospital.current_fx[(288 + Time + i) % 288][j].breathDepth,
+                        bloodPressure: MyHospital.current_fx[(288 + Time + i) % 288][j].bloodPressure,
+                        beat: MyHospital.current_fx[(288 + Time + i) % 288][j].beat,
+                        isBleeding: MyHospital.current_fx[(288 + Time + i) % 288][j].isBleeding,
+                        consciousness: MyHospital.current_fx[(288 + Time + i) % 288][j].consciousness,
                     
-                        hospitalId: MyHospital.current_fx[Time + i][j].HospitalId 
+                        hospitalId: MyHospital.current_fx[(288 + Time + i) % 288][j].HospitalId
                     };
-                    if(MyHospital.current_fx[Time + i][j].preKTAS < 1){
+                    if(MyHospital.current_fx[(288 + Time + i) % 288][j].preKTAS < 1){
+                        patients[6][1].push(returnpatient);
+                    } else {
+                        patients[6][0].push(returnpatient);
+                    }
+                }
+            }
+        }
+        for (let i = 6; i < 20; i++){
+            for (let j = 0; j < MyHospital.current_gx[(288 + Time + i)%288].length; j++){
+                if (MyHospital.current_gx[(288 + Time + i)%288][j].expectedArrival <= preciseTime){
+                    continue;
+                } else {
+                    var returnpatient: GETINFO_RETURN_PATIENT = {
+                        name: MyHospital.current_gx[(288 + Time + i) % 288][j].name,
+                        age: MyHospital.current_gx[(288 + Time + i) % 288][j].age,
+                        sex: MyHospital.current_gx[(288 + Time + i) % 288][j].sex,
+                        latitude: MyHospital.current_gx[(288 + Time + i) % 288][j].latitude,
+                        longitude: MyHospital.current_gx[(288 +Time + i) % 288][j].longitude,
+                        preKTAS: MyHospital.current_gx[(288 +Time + i) % 288][j].preKTAS,
+                    
+                        gido: MyHospital.current_gx[(288 + Time + i) % 288][j].gido,
+                        isBreathing: MyHospital.current_gx[(288 + Time + i) % 288][j].isBreathing,  
+                        breathDepth: MyHospital.current_gx[(288 + Time + i) % 288][j].breathDepth,
+                        bloodPressure: MyHospital.current_gx[(288 + Time + i) % 288][j].bloodPressure,
+                        beat: MyHospital.current_gx[(288 + Time + i) % 288][j].beat,
+                        isBleeding: MyHospital.current_gx[(288 + Time + i) % 288][j].isBleeding,
+                        consciousness: MyHospital.current_gx[(288 + Time + i) % 288][j].consciousness,
+                    
+                        hospitalId: MyHospital.current_gx[(288 + Time + i) % 288][j].HospitalId
+                    };
+                    if(MyHospital.current_gx[(288 + Time + i) % 288][j].preKTAS < 1){
                         patients[6][1].push(returnpatient);
                     } else {
                         patients[6][0].push(returnpatient);
