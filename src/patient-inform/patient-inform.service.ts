@@ -550,17 +550,18 @@ export class PatientInformService {
   }
 
   CalculateArrival(HA: number, HO: number, PA: number, PO: number): number{ // 도착시간 계산함수. api활용? 여기 arrival은 1분단위
-    return Math.round((((((HA-PA)*1111900)**2 + ((HO-PO)*654322)**2)**(1/2)/823)/5));
+    return Math.round((((((HA-PA)*1111900)**2 + ((HO-PO)*654322)**2)**(1/2)/10/823)/5));
   }
 
   CalculateDistance(HA: number, HO: number, PA: number, PO: number): number{
-    return Math.round((((HA-PA)*1111900)**2 + ((HO-PO)*654322)**2)**(1/2));
+    return Math.round((((HA-PA)*1111900)**2 + ((HO-PO)*654322)**2)**(1/2)/10);
+    //return Math.round(((HA-PA)**2 + (HO-PO)**2)**(1/2)*1111900);
   }
 
   CalculateTransferringPatient(current_fx: Patient[][], current_gx: Patient[][]): number{
     var result: number = 0;
     for (let i = 0; i < 288; i++){
-      result += (current_fx[i].length + current_gx.length)
+      result += (current_fx[i].length + current_gx[i].length)
     }
     return result;
   }

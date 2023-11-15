@@ -157,8 +157,9 @@ export class PatientInformController {
             patientId: TargetPatient.id,
             hospitalId: TargetPatient.HospitalId,
             name: TargetHospital.name,
-            estimatedArrival: arrival + Time 
+            estimatedArrival: (((arrival * 5) + Time ) / 60) + ((((arrival * 5) + Time ) % 60) * 0.01)
         };
+        console.log(Time, arrival);
         return returnResult;
     }
 
@@ -207,7 +208,7 @@ export class HospitalInformController {
         var TargetHospitals: Hospital[] = await this.patientService.findAll();
         var MyHospital: Hospital = await this.patientService.findbyId_hospital(id);
         var HospitalList: number[][] = [];
-        var returnResult: GETINFO_RETURN;
+        
         var patients: [GETINFO_RETURN_PATIENT[], GETINFO_RETURN_PATIENT[]][] = [];
         var preciseTime: number = this.patientService.GetPreciseTime();
         var Time: number = this.patientService.GetTime();
@@ -283,22 +284,7 @@ export class HospitalInformController {
                 }
             }
         }
-        returnResult.patients.under5min.normal = patients[0][0];
-        returnResult.patients.under10min.normal = patients[1][0];
-        returnResult.patients.under15min.normal = patients[2][0];
-        returnResult.patients.under20min.normal = patients[3][0];
-        returnResult.patients.under25min.normal = patients[4][0];
-        returnResult.patients.under30min.normal = patients[5][0];
-        returnResult.patients.over30min.normal = patients[6][0];
-
-        returnResult.patients.under5min.special = patients[0][1];
-        returnResult.patients.under10min.special = patients[1][1];
-        returnResult.patients.under15min.special = patients[2][1];
-        returnResult.patients.under20min.special = patients[3][1];
-        returnResult.patients.under25min.special = patients[4][1];
-        returnResult.patients.under30min.special = patients[5][1];
-        returnResult.patients.over30min.special = patients[6][1];
-
+        var rtrnhospitalList: GETINFO_RETURN_HOSPITAL[] = [];
         for (let i = 0; i < HospitalList.length; i++){
             var findId: number;
             for (let j = 0; j < TargetHospitals.length; j++){
@@ -317,8 +303,41 @@ export class HospitalInformController {
                 icuBedExists: 50,
                 icuBedOccupied: 34
             };
-            returnResult.hospitals.push(returnhospital);
+            rtrnhospitalList.push(returnhospital);
         }
+        var returnResult: GETINFO_RETURN = {
+            patients: {
+                under5min: {
+                    normal: patients[0][0],
+                    special: patients[0][1]
+                },
+                under10min: {
+                    normal: patients[1][0],
+                    special: patients[1][1]
+                },
+                under15min: {
+                    normal: patients[2][0],
+                    special: patients[2][1]
+                },
+                under20min: {
+                    normal: patients[3][0],
+                    special: patients[3][1]
+                },
+                under25min: {
+                    normal: patients[4][0],
+                    special: patients[4][1]
+                },
+                under30min: {
+                    normal: patients[5][0],
+                    special: patients[5][1]
+                },
+                over30min: {
+                    normal: patients[6][0],
+                    special: patients[6][1]
+                }
+            },
+            hospitals: rtrnhospitalList
+        };
         return returnResult;
     }
 
