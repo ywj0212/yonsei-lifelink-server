@@ -2,7 +2,6 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Hospital } from '../schemas/hospital.schema'; 
-import { CreateHospitalDto } from '../dtos/hosptial.dto';
 import { Patient } from '../schemas/patient.schema';
 import { Cron } from '@nestjs/schedule'
 import { CreatePatientDto } from 'src/dtos/registerpatient.dto';
@@ -12,12 +11,6 @@ export class PatientInformService {
   constructor(
     @InjectModel(Hospital.name) private hospitalModel: Model<Hospital>,
     @InjectModel(Patient.name) private patientModel: Model<Patient>) {}
-
-  async create(createHospitalDto: CreateHospitalDto): Promise<Hospital> { // 예시코드. 아무의미없음. 삭제예정
-    const createdHospital = new this.hospitalModel(createHospitalDto);
-    console.log(createdHospital);
-    return createdHospital.save();
-  }
 
   async createPatient(createPatientDto: CreatePatientDto, arrival: number, UpdateTime: number): Promise<Patient>{
     var TargetHospital: Hospital = await this.findbyId_hospital(createPatientDto.hospitalId);
@@ -376,7 +369,7 @@ export class PatientInformService {
     var time: number = this.GetTime();
     //console.log(TargetHospitals.length);
     for (let i = 0; i < TargetHospitals.length; i++){
-
+      var FINAL_addedpatient: Patient[] = [];
       // prev_fx, prev_gx 생성
       for (let j = 0; j < 288; j++){
         var FakePatient: Patient[] = [];
@@ -389,11 +382,17 @@ export class PatientInformService {
         }
         TargetHospitals[i].prev_fx[j] = FakePatient;
         TargetHospitals[i].prev_gx[j] = FakePatient2;
+        for (let k = 0; k < FakePatient.length; k++){
+          FINAL_addedpatient.push(FakePatient[k]);
+        }
+        for (let k = 0; k < FakePatient2.length; k++){
+          FINAL_addedpatient.push(FakePatient2[k]);
+        }
       }
       //console.log(TargetHospitals[i].prev_gx);
 
-      //console.log(FakePatient);
-      //console.log(FakePatient2);
+      console.log(FakePatient.length);
+      console.log(FakePatient2.length);
       // current_fx, current_gx 생성
       for (let j = 0; j < Math.floor(TargetHospitals[i].OuterMost_fx / 5); j++){
         var FakePatient3: Patient[] = [];
@@ -419,10 +418,16 @@ export class PatientInformService {
         }
         TargetHospitals[i].current_fx[time + j] = FakePatient3;
         TargetHospitals[i].current_gx[time + j] = FakePatient4;
+        for (let k = 0; k < FakePatient3.length; k++){
+          FINAL_addedpatient.push(FakePatient3[k]);
+        }
+        for (let k = 0; k < FakePatient4.length; k++){
+          FINAL_addedpatient.push(FakePatient4[k]);
+        }
       }
-      //console.log(FakePatient3);
-      //console.log(FakePatient4);
-
+      console.log(FakePatient3.length);
+      console.log(FakePatient4.length);
+      console.log("\n");
       // fx, gx 생성
       for (let j = 0; j < 144; j++){
         TargetHospitals[i].fx[(time + j) % 288] = TargetHospitals[i].E_fx[(time + j) % 288];
@@ -434,10 +439,7 @@ export class PatientInformService {
       }
 
       // db 업데이트
-      await this.patientModel.insertMany(FakePatient);
-      await this.patientModel.insertMany(FakePatient2);
-      await this.patientModel.insertMany(FakePatient3);
-      await this.patientModel.insertMany(FakePatient4);
+      await this.patientModel.insertMany(FINAL_addedpatient);
       await this.hospitalModel.updateOne(
         {"id" : TargetHospitals[i].id},
         {$set: {

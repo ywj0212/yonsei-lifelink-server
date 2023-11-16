@@ -1,6 +1,5 @@
 import { Controller,Get,Post,Body,Param } from '@nestjs/common';
 import { PatientInformService } from './patient-inform.service';
-import { CreateHospitalDto } from '../dtos/hosptial.dto';
 import { CreateGetHospitalDto } from '../dtos/gethospital.dto';
 import { Hospital } from 'src/schemas/hospital.schema';
 import { Patient } from 'src/schemas/patient.schema';
@@ -14,13 +13,6 @@ import { SETDESTINATION_RETURN } from 'src/returnclasses/setdestination.returncl
 @Controller('app')
 export class PatientInformController {
     constructor(private patientService: PatientInformService){}
-
-    @Post() // 그냥 예시코드. 아무 의미 없음
-    async CreatePatientData(@Body() PatientData: CreateHospitalDto){
-        console.log(PatientData);
-        await this.patientService.create(PatientData);
-        return PatientData;
-    }
 
     @Post('gethospitals') // 위치와 응급한 정도 보내면 병원 리스트 보내줌
     async GetHospLists(@Body() ShortPatientData: CreateGetHospitalDto) : Promise<GETHOSPITALS_RETURN[]>{ // Dto 참고. 하나라도 틀리면 안받음
