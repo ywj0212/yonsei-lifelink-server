@@ -46,6 +46,10 @@ export class PatientInformController {
                         break;
                     }
                 }
+                var Occupied: number = this.patientService.CalculateOccupied(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn);
+                if (Occupied > allhospital[findId].K){
+                    Occupied = allhospital[findId].K;
+                }
                 var addedResult = new GETHOSPITALS_RETURN(
                     allhospital[findId].id,
                     allhospital[findId].name,
@@ -54,10 +58,10 @@ export class PatientInformController {
                     this.patientService.CalculateTransferringPatient(allhospital[findId].current_fx, allhospital[findId].current_gx),
                     this.patientService.CalculateCongestion(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn, allhospital[findId].K),
                     this.patientService.CalculateCongestion(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time + arrival / 5), allhospital[findId].Ce, allhospital[findId].Cn, allhospital[findId].K),
-                    this.patientService.CalculateOccupied(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn),
+                    Occupied,
                     allhospital[findId].K,
-                    50,
                     34,
+                    50,
                 );
                 returnResult.push(addedResult);
             }
@@ -85,6 +89,10 @@ export class PatientInformController {
                         break;
                     }
                 }
+                var Occupied: number = this.patientService.CalculateOccupied(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn);
+                if (Occupied > allhospital[findId].K){
+                    Occupied = allhospital[findId].K;
+                }
                 var addedResult = new GETHOSPITALS_RETURN(
                     allhospital[findId].id,
                     allhospital[findId].name,
@@ -93,10 +101,10 @@ export class PatientInformController {
                     this.patientService.CalculateTransferringPatient(allhospital[findId].current_fx, allhospital[findId].current_gx),
                     this.patientService.CalculateCongestion(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn, allhospital[findId].K),
                     this.patientService.CalculateCongestion(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time + arrival / 5), allhospital[findId].Ce, allhospital[findId].Cn, allhospital[findId].K),
-                    this.patientService.CalculateOccupied(allhospital[findId].fx, allhospital[findId].gx, Math.round(Time / 5), allhospital[findId].Ce, allhospital[findId].Cn),
+                    Occupied,
                     allhospital[findId].K,
-                    50,
                     34,
+                    50,
                 );
                 returnResult.push(addedResult);
             }
